@@ -7,9 +7,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -23,8 +25,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -38,9 +41,8 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import co.mobiwise.materialintro.shape.Focus;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.view.MaterialIntroView;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import rx.Observable;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
 
     private Toolbar toolbar;
 
+    private Toolbar mTb_child;
+
 
     /**
      * 和列表视图相关
@@ -70,11 +74,25 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
     // 监听文件夹变化
     private MyFileObserver myFileObserver;
 
+    // tag
+    private static final String TAG = "MainActivity";
+
+    // isDeleted
+    private boolean isDeleted = true;
+
+    // push advice btn
+    private Button btn_push;
+    private EditText et_msg;
+    private Button btn_cancel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "onCreate");
+
 
         myFileObserver = new MyFileObserver(FileSystem.PATH + File.separator + FileSystem.DIR_NAME);
         myFileObserver.startWatching();
@@ -83,6 +101,55 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mTb_child = (Toolbar) findViewById(R.id.tl_child);
+        mTb_child.setTitle(R.string.adviceMe);
+        mTb_child.setTitleTextColor(Color.WHITE);
+
+        btn_push = (Button) findViewById(R.id.btn_push);
+        et_msg = (EditText) findViewById(R.id.et_advice);
+        btn_push.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // push msg to bmob
+                // notify the fab to show
+                // the snackbar show
+                if (et_msg.getText().toString() != null && !et_msg.getText().toString().equals("")) {
+                    FeedBack feedBack = new FeedBack();
+                    feedBack.setAdvice(et_msg.getText().toString());
+                    feedBack.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                            if (e == null) {
+                                Snackbar.make(mRecyclerView, R.string.pushSuccess, Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(mRecyclerView, R.string.pushFailed, Snackbar.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+                BottomSheetBehavior behavior = BottomSheetBehavior.from(findViewById(R.id.nsv));
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                fab_add.show();
+
+
+            }
+        });
+        btn_cancel=(Button)findViewById(R.id.btn_cacel);
+        btn_cancel.setOnClickListener(view1 ->
+                {
+                    BottomSheetBehavior behavior = BottomSheetBehavior.from(findViewById(R.id.nsv));
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                    fab_add.show();
+
+
+
+                }
+
+        );
 
 
         // 交互提示dialog//////////////////////////////
@@ -140,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
             }
         });
 
+        // load the data of file dir
         loadData();
 
         mRecyclerView.addOnItemTouchListener(new OnItemLongClickListener() {
@@ -154,16 +222,40 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                         .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // 本地文件中删除
-                                if (baseQuickAdapter.getItemCount() > i) {
-                                    File file = new File((String) baseQuickAdapter.getItem(position));
-                                    if (file.exists()) {
-                                        file.delete();
+                                File file = new File((String) baseQuickAdapter.getItem(position));
+                                baseQuickAdapter.remove(position);
+                                Snackbar.make(mRecyclerView, R.string.delSuccess, Snackbar.LENGTH_SHORT)
+                                        .setAction(R.string.cancelDel, new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+
+                                                // 重新加载布局
+                                                loadData();
+                                                isDeleted = false;
+
+                                            }
+                                        }).setCallback(new Snackbar.Callback() {
+                                    @Override
+                                    public void onDismissed(Snackbar snackbar, int event) {
+                                        super.onDismissed(snackbar, event);
+                                        Log.d(TAG, "onDismissed");
+
+                                        if (isDeleted) {
+                                            // 本地文件中删除
+                                            if (baseQuickAdapter.getItemCount() > i) {
+                                                if (file.exists()) {
+                                                    file.delete();
+                                                }
+                                            }
+
+                                        } else {
+                                            isDeleted = true;
+                                        }
+
+
                                     }
-                                }
-                                // 重新加载布局
-                                loadData();
-                                Snackbar.make(mRecyclerView, R.string.delSuccess, Snackbar.LENGTH_SHORT).show();
+                                }).show();
+
 
                             }
                         })
@@ -180,7 +272,8 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
             }
         });
 
-//        checkForFirst();
+        // check whether the app is first start
+        checkForFirst();
 
 
     }
@@ -188,24 +281,14 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
     // 检查是否是第一次启动应用
     private void checkForFirst() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        if (sp.getBoolean("isFirst", true)) {
-            new MaterialIntroView.Builder(this)
-                    .enableDotAnimation(true)
-                    .enableIcon(false)
-                    .setFocusGravity(FocusGravity.CENTER)
-                    .setFocusType(Focus.MINIMUM)
-                    .setDelayMillis(500)
-                    .enableFadeAnimation(true)
-                    .performClick(true)
-                    .setInfoText(getResources().getString(R.string.toast))
-                    .setTarget(fab_add)
-                    .setUsageId("intro_card") //THIS SHOULD BE UNIQUE ID
-                    .show();
-
+        boolean isFirstStart = sp.getBoolean("isFirst", true);
+        if (isFirstStart) {
+            startActivity(new Intent(MainActivity.this, GuideActivity.class));
             sp.edit().putBoolean("isFirst", false).apply();
 
         }
 
+        startActivity(new Intent(MainActivity.this, GuideActivity.class));
 
     }
 
@@ -213,7 +296,6 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
     @Override
     public void startMake() {
         // 开始制作
-        Toast.makeText(MainActivity.this, "start make", Toast.LENGTH_SHORT).show();
         mAlertDialog.show();
 
 
@@ -261,8 +343,8 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
         loadData();
         mAlertDialog.setMessage(getResources().getString(R.string.finish));
         mAlertDialog.dismiss();
+        Snackbar.make(mRecyclerView, R.string.finish, Snackbar.LENGTH_SHORT).show();
 
-        Toast.makeText(MainActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -332,10 +414,19 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
             return true;
         } else if (id == R.id.advice) {
 
+            BottomSheetBehavior behavior = BottomSheetBehavior.from(findViewById(R.id.nsv));
+            if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            } else {
+                fab_add.hide();
+
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+
 
         } else {
             // id ==R.id.note
-
+            startActivity(new Intent(MainActivity.this, GuideActivity.class));
 
         }
 

@@ -11,7 +11,15 @@
     <string name="exit">确定要退出应用吗？</string>
     <string name="notexit">图片正在制作中，请不要退出应用~</string>
     <string name="finish">图片制作完成~</string>
+    <string name="cancelDel">撤销删除</string>
     <string name="delSuccess">删除成功~</string>
     <string name="toast">长按删除图片~</string>
+    <string name="adviceMe">意见反馈</string>
+    <string name="push">提交</string>
     <string name="fab_add">点击制作图片~</string>
+    <string name="pushSuccess">提交成功</string>
+    <string name="pushFailed">提交失败,网络是否连接？</string>
+    <string name="enter">进入应用</string>
+    <string name="writeAdvice">写下你的意见并提交，我可以看到哦~作者会在空闲时更新应用~</string>
+    <string name="notething">1.如果图片质量非常高且合成图片很多，会降低图片分辨率\n\n\n2.应用的生成的图片在longimage文件夹\n\n\n3.感谢使用~</string>
 </resources>

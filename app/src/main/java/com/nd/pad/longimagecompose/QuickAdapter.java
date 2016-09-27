@@ -20,7 +20,7 @@ public class QuickAdapter extends BaseQuickAdapter<String>{
 
 
     public QuickAdapter(){
-        super(R.layout.rcv_item,null);
+        super(R.layout.item_rcv,null);
 
     }
 
