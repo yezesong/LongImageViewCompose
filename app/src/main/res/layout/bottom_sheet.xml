@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tl_child"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:layout_below="@+id/tl_child"
+        android:gravity="left"
+        android:padding="12dp"
+        android:id="@+id/et_advice"
+        android:hint="@string/writeAdvice"
+        android:layout_width="match_parent"
+        android:layout_height="120dp" />
+
+    <Button
+        android:id="@+id/btn_push"
+        android:textSize="18sp"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_below="@+id/et_advice"
+        android:text="@string/push"
+        android:layout_width="100dp"
+        android:layout_height="60dp" />
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_cacel"
+        android:textSize="18sp"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_below="@+id/btn_push"
+        android:text="@string/cancel"
+        android:layout_width="100dp"
+        android:layout_height="60dp" />
+
+
+
+</RelativeLayout>

@@ -164,7 +164,7 @@ public class FileSystem {
                     bos.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                }catch (IOException e ){
+                } catch (IOException e ){
                     e.printStackTrace();
                 }
             }

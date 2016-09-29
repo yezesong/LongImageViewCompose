@@ -34,6 +34,8 @@
         <activity android:name=".GuideActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity android:name="com.nd.pad.longimagecompose.AboutMe"
+            android:parentActivityName=".MainActivity"/>
 
     </application>
 

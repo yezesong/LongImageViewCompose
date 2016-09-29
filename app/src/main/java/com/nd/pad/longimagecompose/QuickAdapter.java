@@ -13,6 +13,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * RecyclerView的Adapter
+ *
+ *
  * @author hustdhg
  * @since 2016/09/21
  */

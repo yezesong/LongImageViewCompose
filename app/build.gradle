@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'hustdhg'
+            keyPassword '474487'
+            storeFile file('C:/Program Files/Java/jdk1.8.0_91/bin/android.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion '24.0.0'
     useLibrary 'org.apache.http.legacy'
@@ -19,6 +27,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -26,9 +35,6 @@ android {
         targetCompatibility 1.8
         encoding "utf-8"
     }
-
-
-
 }
 
 dependencies {
@@ -41,7 +47,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:24.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.lovetuzitong:MultiImageSelector:1.2'
-    compile 'com.github.iammert:MaterialIntroView:1.5.2'
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
     compile 'cn.bmob.android:http-legacy:1.0'
 }

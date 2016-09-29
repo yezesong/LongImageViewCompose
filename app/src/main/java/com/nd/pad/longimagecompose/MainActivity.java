@@ -137,14 +137,13 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
 
             }
         });
-        btn_cancel=(Button)findViewById(R.id.btn_cacel);
+        btn_cancel = (Button) findViewById(R.id.btn_cacel);
         btn_cancel.setOnClickListener(view1 ->
                 {
                     BottomSheetBehavior behavior = BottomSheetBehavior.from(findViewById(R.id.nsv));
                     behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
                     fab_add.show();
-
 
 
                 }
@@ -288,9 +287,11 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
 
         }
 
-        startActivity(new Intent(MainActivity.this, GuideActivity.class));
 
     }
+
+
+
 
 
     @Override
@@ -411,6 +412,8 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this,AboutMe.class));
+
             return true;
         } else if (id == R.id.advice) {
 
