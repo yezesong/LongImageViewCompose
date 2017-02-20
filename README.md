@@ -1,4 +1,7 @@
-# LongImageViewCompose
 # 长图生成器v3.0
-
-![小丸子](http://img0.imgtn.bdimg.com/it/u=1203327010,1132190696&fm=21&gp=0.jpg)
+### todo
+- 解决第一次合成图片慢的bug
+- 解决图片生成相册没有刷新的bug
+- 增加应用内置更新功能
+- 增加主题功能
+- 减小OOM概率，提高图片合成的质量
