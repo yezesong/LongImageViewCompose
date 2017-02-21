@@ -18,22 +18,15 @@ public class MyFileObserver extends FileObserver {
 
 
     public MyFileObserver(String path){
-
         super(path);
-
     }
 
     @Override
     public void onEvent(int eventtype, String path) {
-
         if(eventtype==FileObserver.CLOSE_WRITE){
             UIMessage msg=new UIMessage();
             msg.name=path;
-
             EventBus.getDefault().post(msg);
-
-
         }
-
     }
 }

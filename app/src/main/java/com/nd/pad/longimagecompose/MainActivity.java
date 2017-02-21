@@ -127,14 +127,10 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                             }
                         }
                     });
-
                 }
                 BottomSheetBehavior behavior = BottomSheetBehavior.from(findViewById(R.id.nsv));
                 behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
                 fab_add.show();
-
-
             }
         });
         btn_cancel = (Button) findViewById(R.id.btn_cacel);
@@ -142,14 +138,9 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                 {
                     BottomSheetBehavior behavior = BottomSheetBehavior.from(findViewById(R.id.nsv));
                     behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
                     fab_add.show();
-
-
                 }
-
         );
-
 
         // 交互提示dialog//////////////////////////////
         mAlertDialog = new ProgressDialog(MainActivity.this);
@@ -158,10 +149,7 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
         mAlertDialog.setMessage(getResources().getString(R.string.notexit));
         mAlertDialog.setIcon(R.drawable.icon);
         mAlertDialog.setCancelable(false);
-
         Log.d("tag", "test");
-
-
         //---------         --------
         fab_add = (FloatingActionButton) findViewById(R.id.fab);
         fab_add.setOnClickListener(view -> {
@@ -178,11 +166,8 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                         }
                     });
                     oba.start();
-
-
                 }
         );
-
 
         // 列表初始化
         mRecyclerView = (RecyclerView) findViewById(R.id.rv);
@@ -197,12 +182,9 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
         mRecyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.parse("file://" + baseQuickAdapter.getItem(i)), "image/*");
                 startActivity(intent);
-
-
             }
         });
 
@@ -238,7 +220,6 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                                     public void onDismissed(Snackbar snackbar, int event) {
                                         super.onDismissed(snackbar, event);
                                         Log.d(TAG, "onDismissed");
-
                                         if (isDeleted) {
                                             // 本地文件中删除
                                             if (baseQuickAdapter.getItemCount() > i) {
@@ -246,16 +227,11 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                                                     file.delete();
                                                 }
                                             }
-
                                         } else {
                                             isDeleted = true;
                                         }
-
-
                                     }
                                 }).show();
-
-
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -266,15 +242,10 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                         })
                         .create();
                 dialog.show();
-
-
             }
         });
-
         // check whether the app is first start
         checkForFirst();
-
-
     }
 
     // 检查是否是第一次启动应用
@@ -284,22 +255,13 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
         if (isFirstStart) {
             startActivity(new Intent(MainActivity.this, GuideActivity.class));
             sp.edit().putBoolean("isFirst", false).apply();
-
         }
-
-
     }
-
-
-
-
 
     @Override
     public void startMake() {
         // 开始制作
         mAlertDialog.show();
-
-
     }
 
     /**
@@ -309,7 +271,6 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
         // 从本地文件夹加载图片并且显示出来(本地图片的名字就是要在底部显示的内容)
         Observable.just(1)
                 .map(new Func1<Integer, List<String>>() {
-
                     @Override
                     public List<String> call(Integer integer) {
                         FileSystem fs = FileSystem.getInstance();
@@ -329,24 +290,17 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                             mAdapter.setEmptyView(imageView);
                         } else {
                             mAdapter.setNewData(strings);
-
                         }
                     }
                 });
-
-
     }
 
     @Override
     public void endMake(String path) {
-//         制作完成
-
         loadData();
         mAlertDialog.setMessage(getResources().getString(R.string.finish));
         mAlertDialog.dismiss();
         Snackbar.make(mRecyclerView, R.string.finish, Snackbar.LENGTH_SHORT).show();
-
-
     }
 
     // 拦截退出按钮
@@ -366,15 +320,11 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-
                         }
                     })
                     .create();
             alert.show();
-
-
         }
-
         return super.onKeyDown(keyCode, event);
     }
 
@@ -392,8 +342,6 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UIMessage msg) {
         endMake(msg.name);
-
-
     }
 
     @Override
@@ -412,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(MainActivity.this,AboutMe.class));
+            startActivity(new Intent(MainActivity.this, AboutMe.class));
 
             return true;
         } else if (id == R.id.advice) {
@@ -422,18 +370,12 @@ public class MainActivity extends AppCompatActivity implements FileSystem.OnMake
                 behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             } else {
                 fab_add.hide();
-
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
-
-
         } else {
             // id ==R.id.note
             startActivity(new Intent(MainActivity.this, GuideActivity.class));
-
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 

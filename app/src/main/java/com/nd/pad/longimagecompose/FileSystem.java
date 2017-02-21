@@ -39,24 +39,17 @@ public class FileSystem {
     public static final String DIR_NAME="longimage";
 
     private FileSystem() {
-
-
     }
 
     public static FileSystem getInstance() {
-
         if (dot == null) {
-
             synchronized (FileSystem.class) {
-
                 if (dot == null) {
                     dot = new FileSystem();
                 }
             }
         }
-
         return dot;
-
     }
 
     /**
@@ -72,20 +65,14 @@ public class FileSystem {
             file.mkdirs();
         }
         File[] files = file.listFiles();
-
         if(files.length!=0){
             for (File f : files) {
                 if (!f.isDirectory() && (f.getName().endsWith(".jpg") || f.getName().endsWith(".png"))) {
                     list.add(f.getAbsolutePath());
-
                 }
-
             }
-
         }
         return list;
-
-
     }
 
     /**
@@ -113,9 +100,7 @@ public class FileSystem {
         Log.d("this is log", w + "");
         int height = 0;
 
-
         new Thread(() -> {
-
 
             /// 把bitmap转换成目标大小
             List<Bitmap> targets = new ArrayList<>();
@@ -130,7 +115,6 @@ public class FileSystem {
                 Bitmap temp=getScaledBitmap(BitmapFactory.decodeFile(paths.get(i),op),(int)w,(int)(w*temp_height/temp_width));
                 targets.add(temp);
             }
-
 
             int temp_height=0;// 计数高度
             int total_height=0; //总高度
@@ -150,7 +134,6 @@ public class FileSystem {
                 b.recycle();
             }
 
-
             // 保存到本地，并且更新recyclerViewd视图
             File file_dir=new File(PATH,DIR_NAME);
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -168,23 +151,13 @@ public class FileSystem {
                     e.printStackTrace();
                 }
             }
-
-
-
         }).start();
-
-
-
-
-
 
     }
 
     private Bitmap getScaledBitmap(Bitmap b,int dstWidth,int dstHeight){
         return Bitmap.createScaledBitmap(b,dstWidth,dstHeight,false);
-
     }
-
 
     private float getWidth(List<String> paths) {
 
@@ -203,7 +176,6 @@ public class FileSystem {
         }
 
     }
-
 
     public void setMakeListener(OnMakeListener listener) {
         this.listener = listener;
