@@ -5,4 +5,11 @@
 - 增加应用内置更新功能
 - 增加主题功能
 - 减小OOM概率，提高图片合成的质量
-- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/gakki.jpg)
+- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/1.png)
+- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/2.png)
+- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/3.png)
+- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/4.png)
+- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/5.png)
+- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/6.png)
+- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/7.png)
+- ![image](https://raw.githubusercontent.com/MagnifierSun/LongImageViewCompose/master/8.png)
